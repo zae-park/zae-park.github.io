@@ -24,8 +24,11 @@ description: >- # this means to ignore newlines until "baseurl:"
   Hello, this is an demo of the jekyll theme simplex.
   Here you can check out all the features of the theme.
   To try this theme, have a look at the Github.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+
+baseurl: /zae-park.github.io # the subpath of your site, e.g. /blog
+url: https://zae-park.github.io # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: 
+github_username: zae-park
 
 # Build settings
 theme: jekyll-theme-simplex
