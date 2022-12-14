@@ -8,7 +8,7 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 #
-# If you need help with YAML syntax, here are some quick references for you: 
+# If you need help with YAML syntax, here are some quick references for you:
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 #
@@ -18,17 +18,19 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Greetings, i'm Zae.
-email: zae_park@huinno.com
+title: Greetings, I'm zae.
+email: zae-park@huinno.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Hello, this is an demo of the jekyll theme simplex.
-  Here you can check out all the features of the theme.
-  To try this theme, have a look at the Github.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+baseurl: /zae-park.github.io # the subpath of your site, e.g. /blog
+url: https://zae-park.github.io # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: 
+github_username: zae-park
 
 # Build settings
-theme: jekyll-theme-simplex
+theme: minima
 plugins:
   - jekyll-feed
 
@@ -51,20 +53,3 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-
-logo_img: /assets/img/icons/simplex.svg #Absolute path to the logo. If not specified, the title will be displayed instead.
-copyright: © Golasowski 2021, icons by Flaticon.com #Your copyright.
-
-collections:
-    category:
-        output: true
-    authors:
-        output: false
-
-defaults:
-  -
-    scope:
-      path: ""
-      type: category
-    values:
-      layout: "category"
