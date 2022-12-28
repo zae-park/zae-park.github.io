@@ -15,7 +15,7 @@ favicon: /zaevicon.ico
 nickname: Zae
 
 ### this variable is MarkDown form.
-description: Lorem ipsum dolor sit amet, **consectetur adipiscing elit.** <br>Fusce eget urna vitae velit *eleifend interdum at ac* nisi.
+description: __Janteloven__ - Aksel Sandemose
 avatar: /image/happy_bday.jpg
 
 # main menu navigation
@@ -32,23 +32,14 @@ links:
   # Trophy:
   # Gallery:
   # RSS:
-  # AliPay:
-  ZhiHu:
   # LinkedIn:
   # FaceBook:
-  # Twitter:
-  # Skype:
   # CodeSandBox:
-  # CodePen:
   # Sketch:
   # Gitlab:
   # Dribbble:
   Instagram:
-  Reddit:
   # YouTube:
-  # QQ:
-  # Weibo:
-  # WeChat:
   Github: https://github.com/zae-park
 
 # how links show: you have 2 choice--text or icon.
