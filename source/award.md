@@ -1,17 +1,18 @@
 ---
 title: Trophy
 ---
-
+<br>
 <h1>Award</h1>
 
-## CinC & PhysioNet Challenge
+
+## CinC & PhysioNet Challenge 2021
 > Keywords - `Knowledge distillation`, `Multi-label classification`, `Asymmetric loss`, `Mixup`
 
-<img src='img/PhysioNet_award.jpg' width=30% align='right' border=1px>
+<img src='img/PhysioNet_award.jpg' align='right' style="width: 30%;margin-left: 10px;">
 
 - ECG로부터 총 30개의 부정맥을 찾는 global 대회
-- 12 leads signal 및 특정 subset (2, 3, 4, 6 leads) 만을 사용하여 부정맥을 탐지해야 함 → 총 5개 부문
-- 다양한 국가, 환자 특성, 신호 특성이 섞인 dataset으로부터 bias되지 않은 model을 만들어야 함
+- 12 leads signal 및 특정 subset leads 만을 사용해야 함 → 총 5개 부문
+- 환자, 신호 특성 등이 다양한 dataset으로 bias되지 않은 model을 만들어야 함
 <br>
 <aside>
 💡 종합 2위
@@ -21,15 +22,15 @@ title: Trophy
 </aside>
 <br><br>
 
-## ASMRM & ICMRI & JSMRM
-### Title: Blended-transfer learning for cardiac CINE MRI.
+## ASMRM & ICMRI & JSMRM 2020
+### Title : Blended-transfer learning for cardiac CINE MRI.
 > Keywords - `Transfer learning`, `Catastrophic forgetting`, `Generalization`
 
-<img src='img/ASMRM_award.png' width=30% align='right' border=1px>
+<img src='img/ASMRM_award.png' align='right' style="width: 30%;margin-left: 10px;">
 
-- Sparse sensing으로 인한 image 품질 저하를 개선하는 연구
+- Sparse sensing으로 인한 image 품질 저하를 개선
 - Transfer learning을 통해 학습 가속화 및 model의 일반화 및 성능 향상
-- Catastrophic forgetting problem을 보완하는 blended-transfer learning 기법 제안
+- Catastrophic forgetting을 보완하는 blended-transfer learning 기법 제안
 <br>
 <aside>
 💡   
@@ -39,7 +40,7 @@ title: Trophy
 </aside>
 <br><br>
 
-## KSIST
+## KSIST 2019
 > Keywords - `Transfer learning`, `Generalization`
 - Sparse sensing으로 인한 image 품질 저하를 개선하는 연구
 - Transfer learning을 통해 학습 가속화 및 model의 일반화 및 성능 향상
@@ -52,7 +53,7 @@ title: Trophy
 ### DOI: https://doi.org/10.8080/1020200008807
 > Keywords - `3D reconstruction`, `Fourier transform`
 - 주어진 k-space data로부터 고품질 영상을 재구성하는 MRI 기법
-- Data acquisition 시 xy-plane(`axial plane`)의 resolution에 비해 z-axis resolution(`thickness`)이 상대적으로 sparse하다는 점에서 착안.
-- 3D reconstruction을 위해 여러 axial image를 재구성하는 대신 sagital or coronal image를 재구성하는 방식.
-- 이 때 신경망을 사용하여 low resolution을 보완함.
+- MR image는 xy-plane(`axial plane`)의 resolution에 비해 z-axis resolution(`thickness`)이 상대적으로 sparse함.
+- axial plane보다 sagital or coronal plane를 재구성하여 고품질 영상을 재구성
+- sparse sensing의 경우 신경망을 통해 성능을 크게 향상시킬 수 있음
 <br><br>
