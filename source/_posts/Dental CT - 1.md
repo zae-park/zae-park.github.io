@@ -1,5 +1,5 @@
 ---
-title: Dental CT - 2
+title: Dental CT - 1
 date: 2023-01-02 22:47:09
 tags: [CT]
 categories: projects
