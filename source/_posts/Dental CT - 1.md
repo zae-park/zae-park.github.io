@@ -6,7 +6,7 @@ categories: projects
 mathjax: true 
 ---
 
-# Dental CT - 2
+# Dental CT - 1
 
 <aside>
 💡 **험난했던 학부연구생 시절**
