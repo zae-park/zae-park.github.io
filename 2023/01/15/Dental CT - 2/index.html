@@ -26,7 +26,7 @@
 
 
 
-<title>Dental CT - 1 | zae-park&#39;s blog</title>
+<title>Dental CT - 2 | zae-park&#39;s blog</title>
 
 
 
@@ -248,7 +248,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Dental CT - 1</h1>
+            <h1 class="post-title">Dental CT - 2</h1>
             
                 <div class="post-meta">
                     
@@ -257,7 +257,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">1월 2, 2023&nbsp;&nbsp;22:47:09</a>
+                        Date: <a href="#">1월 15, 2023&nbsp;&nbsp;19:45:10</a>
                         </span>
                     
                     
@@ -273,88 +273,48 @@
         </header>
 
         <div class="post-content">
-            <h1 id="Dental-CT-1"><a href="#Dental-CT-1" class="headerlink" title="Dental CT - 1"></a>Dental CT - 1</h1><aside>
-💡 **험난했던 학부연구생 시절**
+            <h1 id="Dental-CT-2"><a href="#Dental-CT-2" class="headerlink" title="Dental CT - 2"></a>Dental CT - 2</h1><aside>
+💡 **생각보다 일찍 끝난 프로젝트**
 
 <hr>
-<p>학부 시절 신호 및 시스템 수업을 너무 재밌게 들은 것이 화근이였다.</p>
-<p>영상처리가 재밌어 보여서 연구실에 들어갔더니 웬걸?</p>
-<p>Dental CT 제조기업과 연계된 과제에 참여하게 되었다.</p>
-<p>그래도 제품에 기여한 좋은 경험이니 정리해본다.</p>
+<p>주 과제인 MAR이 너무 일찍 끝나버렸다.</p>
+<p>사실 소속된 연구실은 MRI를 연구하고 있었는데, 마침 압축센싱을 연구하던 중이더라.</p>
+<p>CT에도 압축센싱을 적용할 수 있다. 심지어 저선량 촬영이 가능하다는 장점이 명확하다.</p>
 </aside>
 
-</aside>
-<details markdown="1">
-    <summary><strong> How to imaging? 간단 정리</strong></summary>
-        <ul>
-            <li>object를 중심으로 회전하며 여러 각도에서 X-선을 촬영한다.</li>
-            <li>detector에서 획득한 attenuated energy들을 sinogram으로 표현한다.</li>
-            <li>sinogram은 object를 투과하며 선적분되었다.</li>
-            <ul><li>이미 radon transform되어있다.</li></ul>
-            <li>Inverse radon transform으로 CT image를 재구성할 수 있다.</li>
-            <ul>
-                <li>sinogram의 각 angle의 energy를 back-projection한다.</li>
-                <li>이 떄, filter를 사용하지 않으면 angle의 수와 비례하여 image가 blur해진다.</li>
-            </ul>
-        </ul>
-</details>
-<br>
-
-<h2 id="Task-Metal-Artifact-Reduction"><a href="#Task-Metal-Artifact-Reduction" class="headerlink" title="Task: Metal Artifact Reduction"></a>Task: Metal Artifact Reduction</h2><p>주 과제는 딥러닝으로 구강 내 금속물로 인한 artifact를 제거하는 것이였다.</p>
-<p>문제는 <code>ground truth image</code>, 즉 artifact free image를 구할수 없다는 점이였다.</p>
+<h2 id="Task-Compressed-sensing"><a href="#Task-Compressed-sensing" class="headerlink" title="Task: Compressed sensing"></a>Task: Compressed sensing</h2><p>건강검진이나 부상의 이유로 병원에서 CT를 찍게 되면 병원에선 일정 기간 내에 CT를 촬영한 전적이 있는지 조사한다. 채네 축적된 방사선량이 너무 높으면 위험하기 때문이다. 하지만 CT image의 품질은 촬영시 조사하는 방사선량에 비례한다.</p>
+<p>적은 조사선량으로도 고품질 CT image를 획득할 수 있으면 얼마나 좋을까?</p>
 <hr>
-<p>그래서 metal이 없는 image로부터 metal artifact를 생성하기로 했다.</p>
-<p>정교한 시뮬레이션을 위해서는 metal artifact 생성과정을 알아야한다.</p>
-<p>X-선은 object를 투과하며 energy가 감쇠된다.</p>
-<p>즉, $E_{source} - E_{detector}$를 imaging하는 것이다.</p>
-<p>모든 object는 고유한 감쇠계수를 갖는데, 문제는 이 계수가 E에 의존한다는 점이다.</p>
-<p>$$<br>C_{attenuation} &#x3D; f(object, E)<br>$$</p>
-<p>실제로는 아래와 같이 streak artifact가 심하게 발생한다.</p>
-<p><img src="/resource/ct_1/Untitled.png" alt="실제 distorted image"></p>
-<p>불행 중 다행은 <strong>fan beam CT</strong>라 근방의 image에서 <strong>간섭하는 artifact</strong>는 무시해도 된다는 점이다.</p>
-<hr>
-<h3 id="Data-generation"><a href="#Data-generation" class="headerlink" title="Data generation"></a>Data generation</h3><ol>
-<li><p>metal이 없는 image 준비하기</p>
-<p> metal artifact를 시뮬레이션하기로 했으니 이제 재료가 필요하다.</p>
-<p> 기업에 간곡히 요청하면 (구걸 x) metal이 없는 image를 받을 수 있다.</p>
-<p> <img src="/resource/ct_1/Untitled_1.png" alt="metal이 없는 image"></p>
+<p>CT는 photon과 detentor를 회전시키며 X-선을 다양한 각도에서 조사하고 imaging한다. 따라서 X-선의 조사량을 줄이면 저선량 촬영이 가능하고 이는 photon의 회전각 변화량을 키우면 된다.</p>
+<p>$$<br>\frac{1}{resolution} \propto Dose \propto \Delta \theta<br>$$</p>
+<p>아래는 $\Delta\theta$에 따른 영상품질을 나타낸 것이다.</p>
+<p><img src="/resource/ct_2/Untitled.png" alt="**3D reconstruction based on compressed-sensing (CS)-based framework by using a dental panoramic detector**"></p>
+<p><strong>3D reconstruction based on compressed-sensing (CS)-based framework by using a dental panoramic detector</strong></p>
+<h3 id="Data-generation"><a href="#Data-generation" class="headerlink" title="Data generation"></a>Data generation</h3><p>사실 CT image의 품질은 $\Delta\theta$ 뿐 아니라 object의 크기, object와 photon의 거리와도 관계가 있다. 그래서 phantom image를 기반으로 시뮬레이션을 좀 해보고 적당한 $\Delta\theta$를 찾아보았다.</p>
+<p><img src="/resource/ct_2/Untitled_1.png" alt="Untitled"></p>
+<p><img src="/resource/ct_2/Untitled_2.png" alt="Untitled"></p>
+<p>윗줄이 object 크기가 작은 경우, 아랫줄이 object 크기가 큰 경우이다.<br>잘 보이지 않겠지만… object가 클수록 광원과의 거리가 가까워지고 artifact가 심해진다.<br>그래도 artifact가 영 심하지 않아서 적당히 해볼만 한 듯 하다.</p>
+<p><img src="/resource/ct_2/Untitled_3.png" alt="Untitled"></p>
+<p><img src="/resource/ct_2/Untitled_4.png" alt="Untitled"></p>
+<p>실제 CT image는 object size가 phantom보다 훨씬 크기 때문에 훼손 정도도 심하다.<br>그래도 잘될거라 기대하며 실험해볼 수 밖에…</p>
+<h3 id="Method-amp-Result"><a href="#Method-amp-Result" class="headerlink" title="Method &amp; Result"></a>Method &amp; Result</h3><p><img src="/resource/ct_2/Untitled_5.png" alt="Untitled"></p>
+<p>MAR과 마찬가지로 U-net을 residual 방식으로 학습하였다.  $\Delta\theta$은 과감하게 $10\degree$이다.</p>
+<p><img src="/resource/ct_2/Untitled_6.png" alt="Untitled"></p>
+<p>오잉?? 생각보다 reconstruction이 너무 잘 되었다.<br>꿈보다 해몽: CS는 결국 sinogram의 angle 축 resolution만 줄어든 것이니 interpolation 문제이다.</p>
+<h2 id="Task-Compressed-sensing-MAR"><a href="#Task-Compressed-sensing-MAR" class="headerlink" title="Task: Compressed sensing + MAR"></a>Task: Compressed sensing + MAR</h2><p>CS가 생각보다 잘먹힌다는 사실을 알았다. 심지어 $\Delta\theta &#x3D; 10\degree$인데도.<br>그러면 MAR을 안 합쳐볼수가 없다.</p>
+<p><img src="/resource/ct_2/Untitled_7.png" alt="Untitled"></p>
+<p>distortion이 너무 심하다…</p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><ul>
+<li><p>DegInc 5</p>
+<p>  <img src="/resource/ct_2/Untitled_8.png" alt="Untitled"></p>
 </li>
-<li><p>metal 추가하기</p>
-<p> 원하는 부위(치아)에 원하는 metal을 추가할 수 있어야 한다.</p>
-<ul>
-<li>치아 선택 기능이 있는 gui 제작한다.</li>
-<li>선택된 치아의 edge를 찾고 metal을 생성한다.</li>
-</ul>
-<p> <img src="/resource/ct_1/Untitled_3.png" alt="GUI"><br> <img src="/resource/ct_1/Untitled_2.png" alt="예시"></p>
-</li>
-<li><p>CT imaging 시뮬레이션 하기</p>
-<p> MATLAB의 도움을 아주 많이 받았다! 최고!</p>
-<p> <img src="/resource/ct_1/Untitled_4.png" alt="**Left** : 시뮬레이션으로 생성한 distorted image **Right** : difference image = `raw image + metal - distorted image`"></p>
-<p> <strong>Left</strong> : 시뮬레이션으로 생성한 distorted image<br> <strong>Right</strong> : difference image &#x3D; <code>raw image + metal - distorted image</code></p>
-</li>
-</ol>
-<hr>
-<h3 id="Method-amp-Result"><a href="#Method-amp-Result" class="headerlink" title="Method &amp; Result"></a>Method &amp; Result</h3><p>신경망은 <strong>U-net</strong>을 사용했고, 2가지 학습 방법을 시도했다.</p>
-<ul>
-<li><code>Direct</code> : distorted image → metal free image</li>
-<li><code>Residual</code> : distorted image → difference image<ul>
-<li>metal free image &#x3D; distorted image - difference image</li>
-</ul>
+<li><p>DegInc 10</p>
+<p>  <img src="/resource/ct_2/Untitled_9.png" alt="Untitled"></p>
 </li>
 </ul>
-<p><img src="/resource/ct_1/Untitled_5.png" alt="Residual 학습 방법"></p>
-<p>Residual 학습 방법</p>
-<p>여러 hyper parameter, data 구성, dynamic range등을 조절하며 두 학습 방법을 비교한 결과</p>
-<p>일관적으로 <code>Residual</code> 학습 방법이 더 좋은 성능을 보였다 → <strong>criteria &#x3D; NMSE</strong></p>
-<p>결국, 아래의 reconstructed image를 얻을 수 있었다. 짜잔~</p>
-<p><img src="/resource/ct_1/Untitled_6.png" alt="distorted image"></p>
-<p>엄청 잘되는 것 같아 보이지만, metal이 너무 가까이 붙어있거나 많으면 artifact가 남는다.</p>
-<ul>
-<li>치아 사이 입천장 즈음에 dark band는 ROI가 아니라 괜찮지만…</li>
-<li>metal과 metal 사이에 위치한 치아는 형태를 알아보기 어려워지기도 한다.</li>
-</ul>
-<p><img src="/resource/ct_1/Untitled_7.png"></p>
-<p>여러 방법을 시도하고 NMSE 기준 TOP-4를 선정.<br>양치를 너무 안하면 그래도 artifact가 많이 남는다…</p>
+<p>당연스럽게도, 광원의 회전각이 작을 때 distortion이 덜하고 reconstructed image도 좋다.</p>
+<p>DegInc가 10일 때도 썩 봐줄만하다고 생각했는데… </p>
+<p>Metal artifact가 심한 경우에는 좀 위험한지 DegInc가 5일 때 까지만 허용하기로 했다.</p>
 
         </div>
 
@@ -396,10 +356,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2023/01/15/Dental%20CT%20-%202/">Dental CT - 2</a>
             
-            
-            <a class="next" rel="next" href="/2022/12/28/hello-world/">Hello World</a>
+            <a class="next" rel="next" href="/2023/01/02/Dental%20CT%20-%201/">Dental CT - 1</a>
             
         </section>
 
