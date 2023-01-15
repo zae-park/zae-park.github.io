@@ -51,9 +51,17 @@ title: Trophy
 
 ## SYSTEM AND METHOD OF GENERATING MAGNETIC RESONANCE IMAGE USING DEEP ARTIFICIAL NEURAL NETWORK
 ### DOI: https://doi.org/10.8080/1020200008807
-> Keywords - `3D reconstruction`, `Fourier transform`
+> Keywords - `MRI`, `3D reconstruction`, `Fourier transform`
 - 주어진 k-space data로부터 고품질 영상을 재구성하는 MRI 기법
 - MR image는 xy-plane(`axial plane`)의 resolution에 비해 z-axis resolution(`thickness`)이 상대적으로 sparse함.
 - axial plane보다 sagital or coronal plane를 재구성하여 고품질 영상을 재구성
 - sparse sensing의 경우 신경망을 통해 성능을 크게 향상시킬 수 있음
+<br><br>
+
+## METHOD, SYSTEM AND NON-TRANSITORY COMPUTER-READABLE RECORDING MEDIUM FOR PROCESSING DATA RELATED TO MACHINE LEARNING MODEL
+### DOI: https://doi.org/10.8080/1020210088780
+> Keywords - `Electrocardiogram`, `Beat detection`, `Segmentation & Regression`
+- 심전도 신호 내에 존재하는 QRS-complex(beat)들을 검출.
+- 검출된 beat는 Normal beat, Premature atrial beat, Premature Ventricular beat 총 3 class로 분류
+- Segmentation & Regression, 2-stage로 구분된 시스템.
 <br><br>
