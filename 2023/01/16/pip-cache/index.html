@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VER5KPGTDK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VER5KPGTDK');
+</script>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="zae-park">
+
+
+    <meta name="subtitle" content="spoon">
+
+
+    <meta name="description" content="The devil in the details.">
+
+
+
+<title>pip cache | zae-park&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/zaevicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">zae-park&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">zae-park&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">pip cache</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">zae-park</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">1월 16, 2023&nbsp;&nbsp;23:13:31</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/dev-env/">dev-env</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="pip-cache"><a href="#pip-cache" class="headerlink" title="pip cache"></a>pip cache</h1><p>이것저것 쑤셔보며 개발환경을 마구 생성하던 어느 날 갑자기 C 드라이브의 용량이 부족하다는 경고를 받았다. 1TB, 2TB SSD를 2개나 사용하고, 개발용 하드와 DB용 하드를 따로 사용하고 있어서 평생 마주하지 않을 줄 알았는데… 대체 어떤 파일들이 범인일까?</p>
+<p><img src="/resource/pip_cache/Untitled.png"></p>
+<p>C 드라이브 내의 폴더들의 용량을 찍어보며 범인을 색출했더니…<br>당연히 downloads 폴더가 주범이였지만, 생각지도 못한 공범이 있었다.</p>
+<p><img src="/resource/pip_cache/pip.png" alt="pip.png"></p>
+<p>이게 무엇??</p>
+<p>찾아보니 pip를 사용해서 다운받은 package들을 캐싱해놓은 파일이라 한다. 하위 디렉토리는 3가지가 있는데 내부 tree 구성이 조금씩 다르다.</p>
+<ul>
+<li>http - 이름이 <code>[0-9a-z]</code> char인 계층 노드로 구성되어 있고 leaf에는 hash 값이 적힌 파일.</li>
+<li>selfcheck - 단일 계층이고 여러 hash file들로 구성.</li>
+<li>wheels - 이름이 <code>ASCII</code> char인 계층 노드로 구성되어 있고 leaf에는 [hash]-[whl 파일].</li>
+</ul>
+<p>그렇다면 이 캐시들은 왜 필요할까? 만약 캐시가 쌓이고 쌓이면 C 드라이브에 누적되는 게 좋을까? 캐시를 지워야하는 경우는 없을까?</p>
+<h3 id="캐싱-옵션"><a href="#캐싱-옵션" class="headerlink" title="캐싱 옵션"></a>캐싱 옵션</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># pip -h</span><br><span class="line"></span><br><span class="line">--cache-dir &lt;dir&gt;           Store the cache data in &lt;dir&gt;.</span><br><span class="line">--no-cache-dir              Disable the cache.</span><br></pre></td></tr></table></figure>
+
+<p>pip에서 제공하는 documentation을 참조하면 <code>--cache-dir</code> , <code>--no-cache-dir</code> 의 명령어로 캐싱 여부를 선택할 수 있다. 여기까지는 pip 유저라면 초반에 많이 봐왔을 document이다.</p>
+<p>그런데 package를 캐시하려면 인자로 <code>&lt;dir&gt;</code> 이 필요하다. 여태 사용해본적 없는 명령어인데 내 C 드라이브에 22GB나 들어찼다는 것은 default path가 있다는 뜻이겠다. 그럼 path를 지정할 수 있지 않을까?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># pip cache -h</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  pip cache dir</span><br><span class="line">  pip cache info</span><br><span class="line">  pip cache list [&lt;pattern&gt;] [--format=[human, abspath]]</span><br><span class="line">  pip cache remove &lt;pattern&gt;</span><br><span class="line">  pip cache purge</span><br><span class="line"></span><br><span class="line">Description:</span><br><span class="line">  Inspect and manage pip&#x27;s wheel cache.</span><br><span class="line"></span><br><span class="line">  Subcommands:</span><br><span class="line"></span><br><span class="line">  - dir: Show the cache directory.</span><br><span class="line">  - info: Show information about the cache.</span><br><span class="line">  - list: List filenames of packages stored in the cache.</span><br><span class="line">  - remove: Remove one or more package from the cache.</span><br><span class="line">  - purge: Remove all items from the cache.</span><br><span class="line"></span><br><span class="line">  ``&lt;pattern&gt;`` can be a glob expression or a package name.</span><br><span class="line"></span><br><span class="line">Cache Options:</span><br><span class="line">  --format &lt;list_format&gt;      Select the output format among: human (default) or abspath</span><br></pre></td></tr></table></figure>
+
+<p>더 자세한 documentation를 참조하면 위와 같이 아주 친절히 알려준다. </p>
+<ul>
+<li><p>pip cache dir</p>
+<p>  <code>c:\***\***\appdata\local\pip\cache</code> - 용량을 은근 잡아먹던 캐시 경로가 나온다.</p>
+</li>
+<li><p>pip cache info</p>
+<p>  이름에 맞게 자세한 정보들을 제공한다. 정말로 22GB를 잡아먹고 있으면서 몇개의 http 파일과 wheel 파일을 캐싱중인지도 보여준다. 이런!</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Package index page cache location: c:\***\***\appdata\local\pip\cache\http</span><br><span class="line">Package index page cache size: 23772.7 MB</span><br><span class="line">Number of HTTP files: 832</span><br><span class="line">Wheels location: c:\***\***\appdata\local\pip\cache\wheels</span><br><span class="line">Wheels size: 2.5 MB</span><br><span class="line">Number of wheels: 30</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pip cache list (&amp; remove)</p>
+<p>  이 명령어들은 <code>pattern</code>이라는 추가 인자를 받는데, glob 표현식 혹은 package name이라 한다. 또, list에서는 <code>format</code> 인자를 추가로 받는데, abs는 cache된 package들의 절대경로, human은 package들의 이름이다.</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># pip cache list gem</span><br><span class="line"></span><br><span class="line">Cache contents:</span><br><span class="line"> - gem-0.1.12-py3-none-any.whl (15 kB)</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># pip cache list --format abspath</span><br><span class="line"></span><br><span class="line">c:\users\user\appdata\local\pip\cache\wheels\fe\df\1c\53eb0b5ea5052d2d39138ea18c08b07e81502f7c2edf0a4064\gem-0.1.12-py3-none-any.whl</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># pip cache remove gem</span><br><span class="line"></span><br><span class="line">Files removed: 1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pip cache purge</p>
+<p>  설명 그대로 캐시를 삭제한다. 나는 이 캐시파일을 다른 경로로 옮기고 싶으니 궁금한 사람은 직접해보세요.</p>
+</li>
+</ul>
+<h3 id="캐싱-경로-변경"><a href="#캐싱-경로-변경" class="headerlink" title="캐싱 경로 변경"></a>캐싱 경로 변경</h3><p>목표는 <code>pip cache dir</code> 명령어에서 변경한 경로가 출력되는 것이다. 남은 용량을 고려하면 E 드라이브로 경로를 바꾸는 것이 좋아보이지만… 실제로 C 드라이브와 D 드라이브가 같은 SSD이니 캐시의 장점을 유지하기 위해 같은 디바이스인 D 드라이브로 경로를 수정해준다.</p>
+<p>안타깝게도 pip 명령어로는 경로를 수정할 수 없다. 그럼 어딘가에 저장된 file을 수정해야 할까? <code>pip config debug -v</code> 로 config 파일의 위치를 알 수 있지만 안타깝게도 효과는 없었다. 정답은 <strong>환경변수</strong>이다. 아래와 같이 새 환경변수를 추가하고 <code>pip cache dir</code> 로 수정된 경로를 확인해보시라!</p>
+<p><img src="/resource/pip_cache/env_path.png" alt="env_path.png"></p>
+<h3 id="여담"><a href="#여담" class="headerlink" title="여담"></a>여담</h3><p>게임기가 아닌 컴퓨터를 처음 만지던 시절 환경변수를 왜 추가해야하는지, 시스템 변수와 사용자 변수 중 어디에 추가해야하는지 아무도 알려주지 않더라. 그냥 추가하라 하거나 상관없다고 하거나.</p>
+<p>예를 들면, 시스템 변수는 전역변수이고 사용자 변수는 로컬 변수이다. 시스템 변수에 등록된 환경변수들은 같은 PC의 다른 사용자들도 사용하는 변수이고, 사용자 변수는 현재 사용자만 사용할 수 있다. 당연히 전역변수는 조심히 설정해야 한다. 필요한 경우에만.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>zae-park</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/pip/"># pip</a>
+                    
+                        <a href="/tags/environment/"># environment</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/01/19/MySQL_start/">MySQL 시작하기</a>
+            
+            
+            <a class="next" rel="next" href="/2023/01/15/Dental%20CT%20-%202/">Dental CT - 2</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© zae-park | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
