@@ -2,6 +2,7 @@
 title: MySQL 시작하기
 date: 2023-01-19 22:07:14
 tags: [MySQL]
+categories: database
 ---
 
 # MySQL 시작하기
