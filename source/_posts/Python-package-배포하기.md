@@ -114,7 +114,7 @@ poetry publish --build
 
 ![Untitled](resource/Py_package/Untitled_3.png)
 
-PyPI에 정상적으로 등록되었다. 이제 무료로 PyPI의 리소스를 사용하는 만큼 이 package에 책임이 생긴 것이다. 꼭 잘 마무리하자.
+poetry를 사용하면 twine과 같은 upload tool을 따로 사용하지 않고 이렇게 build부터 publish까지 해결할 수 있다. 이제 무료로 PyPI의 리소스를 사용하는 만큼 이 package에 대한 책임이 생겼으니 꼭 잘 마무리해야겠다.
 
 ### Reference
 
