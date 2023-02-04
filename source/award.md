@@ -58,8 +58,8 @@ title: Trophy
 - sparse sensing의 경우 신경망을 통해 성능을 크게 향상시킬 수 있음
 <br><br>
 
-## METHOD, SYSTEM AND NON-TRANSITORY COMPUTER-READABLE RECORDING MEDIUM FOR PROCESSING DATA RELATED TO MACHINE LEARNING MODEL
-### DOI: https://doi.org/10.8080/1020210088780
+## METHOD, SYSTEM AND NON-TRANSITORY COMPUTER-READABLE RECORDING MEDIUM FOR DETECTING AND CLASSIFYING BEAT IN ELECTROCARDIOGRAM SIGNAL
+### DOI: https://doi.org/10.8080/1020220084605
 > Keywords - `Electrocardiogram`, `Beat detection`, `Segmentation & Regression`
 - 심전도 신호 내에 존재하는 QRS-complex(beat)들을 검출.
 - 검출된 beat는 Normal beat, Premature atrial beat, Premature Ventricular beat 총 3 class로 분류
