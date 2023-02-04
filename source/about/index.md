@@ -8,6 +8,10 @@ date: 2023-02-04 20:27:33
 
 👀 I’m interested in generative model and application of A.I. for medicine.
 
+⚽ I enjoy playing football and tennis and watching their matches.
+
+🔨 I also like carving wood and crafting some stuff.
+
 🌱 History
 - Metal Artficat Reduction & Compressed Sensing @ Dental CT
 - Compressed Sensing @ Cardiac MRI
