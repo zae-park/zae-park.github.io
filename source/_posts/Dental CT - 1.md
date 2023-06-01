@@ -6,9 +6,12 @@ categories: projects
 mathjax: true 
 ---
 
-
 학부 연구생 생활 중 Dental CT 제조기업과 함께 프로젝트를 진행한 적이 있다. </br>
 연구실 선배들과 같이 열심히 연구하고 실제 제품에도 기여한 좋은 경험을 정리해본다.
+
+### Computed Tomography
+- [Radon transform](#radon-transform)
+- [Back-projection](#back-projection)
 
 ---
 
@@ -22,36 +25,37 @@ $$
 E_{attenuated} = E_{source} - E_{detector}
 $$
 
-CT 촬영기법은 이 **감쇄된 energy**를 모든 각도에서 촬영하고 이를 다시 회전각-감쇄도 축에 그려 `sinogram` 이라는 그래프를 만든다. 다시말해 이 `sinogram`은 "각도에 따라 느껴지는 감쇄정도"로 해석할 수 있다. 마치 초등학생 시절 블럭으로 이상한 모양의 탑을 쌓아두고 다각도에서 바라보았을 때 몇개의 블럭이 보이는지 묻는 문제와 같은데, 이것이 라돈 변환이랑 매우 비슷하다. </br>
+CT 촬영기법은 이 **감쇄된 energy**를 모든 각도에서 촬영하고 이를 다시 회전각-감쇄도 축에 그려 `sinogram` 이라는 그래프를 만든다. 다시말해 이 `sinogram`은 "각도에 따라 느껴지는 감쇄정도"로 해석할 수 있는데 이것이 라돈 변환과 매우 비슷하다. </br>
+
+> 초등학생 시절 블럭으로 이상한 모양의 탑을 쌓아두고 다각도에서 바라보았을 때 몇개의 블럭이 보이는지 묻는 문제와 같다.
 
 ![Sinogram of Phantom](resource/ct_1/sinogram.png)
+
+### Radon Transform
 
 아래 그림은 라돈변환의 예시인데, 그림과 함께 간단하게 설명하자면 "어떤 점과 점 사이를 선적분한 값" 을 표현한 것이다. 이 선적분된 값들을 회전각 축으로 모아둔다면 위의 `sinogram`과 비슷한 그래프가 그려질 것이다.
 
 ![Radon Transform](resource/ct_1/radon.png)
 
-이렇게 CT에서 획득한 `sinogram`은 라돈 변환, 즉 선적분의 결과를 물리적으로 획득한 것이다. 
+이렇게 CT에서 획득한 `sinogram`은 라돈 변환, 즉 선적분의 결과를 물리적으로 획득한 것이다. 그래서 어쩌라는 거냐고? 이제 이 `sinogram`을 다시 image로 복원하기만 하면 된다. 재밌는 점은 이 복원 과정에 또 다시 적분이 사용된다는 점이다. 푸리에 변환과 역변환도 모두 적분을 사용하는 것을 생각하면 꽤 자연스럽다. </br>
+엥? 이거 완전 삼각함수 아니냐!
+
+### Back-projection
+
+가장 간단한 복원 방법은, `sinogram`에서 각 회전각마다 그려진 `감쇄된 energy`를 그대로 back-projection하는 것이다. 이는 마치 키보드에서 입력 키를 인식하는 원리와 같다. 아래는 back-projection의 예시이다.
+
+> 옛날 키보드는 키 인식을 위한 축을 2개만 사용해서 동시 입력 시 인식에 실패하는 키 조합이 있었다. 이를 응용하면 피카츄 배구를 유리하게 할 수 있다.
+
+![Back-projection of Phantom](resource/ct_1/backprojection.png)
+
+그림에서 알 수 있듯이 back-projection이 생각보다 blur하다. 촬영 시 회전각의 변화량을 작게 하고 많은 projection data를 얻을 수 있다면 좋겠지만, X-ray은 방사선이라 많은 양을 조사할 수는 없다.</br>
+사실 긴 시간이 지나 왜 naive한 back-projection이 blur한 image를 복원하는지는 기억이 나지 않는다. 다행스럽게도 기억이 나는 것은 `sinogram`의 어떤 회전각의 projection을 1차원 푸리에 변환하면, 같은 회전각을 갖는 푸리에 공간의 주파수 특성을 얻을 수 있다는 점이다. (말이 좀 어렵겠지만... Fourier-Slicing thm을 찾아보면 도움이 될지도?)</br>
+일단 주파수 영억으로 넘어가게 되면, 가장 먼저 생각할 수 있는 시도는 filtering이다. 이론적으로는 푸리에 변환 후 투사방식에 맞는 filter를 적용하고 다시 푸리에 역변환한 뒤 back-projection을 해야하지만, 그럴 필요 없이 convolution으로도 frequency filtering을 할 수 있었고, 그래서 convolution back-projection이라고도 부르더라!
+
+> 초창기 CT는 하나의 source와 하나의 detector가 쌍을 이루는 `pen-beam` 방식을 사용하며, 주로 사용되는 filter는 **hann** 혹은 **hammin** 윈도우를 사용했다. </br>
+> 하지만, 이 후 하나의 source와 다수의 detector를 사용하는 `fan-beam` 방식을 사용하면서 더 복잡한 형태의 filter를 사용하게 되었고, 현대에 들어서는 `corn-beam` 방식을 사용한다. 이게 정말 머리 터진다.
 
 
-
-</aside>
-
-</aside>
-<details markdown="1">
-    <summary><strong> How to imaging? 간단 정리</strong></summary>
-        <ul>
-            <li>object를 중심으로 회전하며 여러 각도에서 X-선을 촬영한다.</li>
-            <li>detector에서 획득한 attenuated energy들을 sinogram으로 표현한다.</li>
-            <li>sinogram은 object를 투과하며 선적분되었다.</li>
-            <ul><li>이미 radon transform되어있다.</li></ul>
-            <li>Inverse radon transform으로 CT image를 재구성할 수 있다.</li>
-            <ul>
-                <li>sinogram의 각 angle의 energy를 back-projection한다.</li>
-                <li>이 떄, filter를 사용하지 않으면 angle의 수와 비례하여 image가 blur해진다.</li>
-            </ul>
-        </ul>
-</details>
-<br>
 
 ## Task: Metal Artifact Reduction
 
