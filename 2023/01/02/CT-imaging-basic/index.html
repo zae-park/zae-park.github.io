@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VER5KPGTDK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VER5KPGTDK');
+</script>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="zae-park">
+
+
+    <meta name="subtitle" content="spoon">
+
+
+    <meta name="description" content="The devil in the details.">
+
+
+
+<title>CT imaging 기초 | zae-park&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/zaevicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">zae-park&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">zae-park&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">CT imaging 기초</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">zae-park</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">1월 2, 2023&nbsp;&nbsp;22:47:09</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/projects/">projects</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Computed-Tomography"><a href="#Computed-Tomography" class="headerlink" title="Computed Tomography"></a>Computed Tomography</h3><ul>
+<li><a href="#computed-tomography-1">Computed Tomography</a><ul>
+<li><a href="#radon-transform">Radon Transform</a></li>
+<li><a href="#back-projection">Back-projection</a></li>
+</ul>
+</li>
+</ul>
+<p>인생의 첫 연구는 학부 연구생 시절 Dental CT 제조기업(G**)과 함께 진행한 Metal Artifact Reduction 프로젝트다. 너무 어려웠지만 선배들과 같이 연구하고 실제 제품에도 기여한 좋은 경험이니 최대한 잘 정리해보려 한다.</p>
+<p>우선, 이 글에서는 CT image의 촬영 원리를 최대한 기억해서 써본다.</p>
+<hr>
+<h2 id="Computed-Tomography-1"><a href="#Computed-Tomography-1" class="headerlink" title="Computed Tomography"></a>Computed Tomography</h2><p>CT는 X-ray 영상을 다각도에서 촬영하는 기법이다. </br><br>그러면 대체 투과 영상인 X-ray를 어떻게 해야 CT 같은 단층 촬영 영상이 나올까?</p>
+<p>먼저, X-ray 영상을 떠올려 보면, (대개는 흉부 X-ray 영상을 상상한다) 지방, 근육등의 조직은 흐리거나 투명하게, 뼈와 같은 밀도가 높은 조직은 하얗게 나타난다. 이는 X-ray 영상이 조직이 <code>감쇄된 energy</code>를 나타내기 때문이며, 감쇄된 정도는 <code>조사한 energy</code> - <code>검출된 energy</code>로 계산한다.<br>$$<br>E_{attenuated} &#x3D; E_{source} - E_{detector}<br>$$</p>
+<p>CT 촬영기법은 이 <strong>감쇄된 energy</strong>를 모든 각도에서 촬영하고 이를 다시 회전각-감쇄도 축에 그려 <code>sinogram</code> 이라는 그래프를 만든다. 다시말해 이 <code>sinogram</code>은 “각도에 따라 느껴지는 감쇄정도”로 해석할 수 있는데 이것이 라돈 변환과 매우 비슷하다. </br></p>
+<blockquote>
+<p>초등학생 시절 블럭으로 이상한 모양의 탑을 쌓아두고 다각도에서 바라보았을 때 몇개의 블럭이 보이는지 묻는 문제와 같다.</p>
+</blockquote>
+<p><img src="/resource/ct_basic/sinogram.png" alt="Sinogram of Phantom"></p>
+<h3 id="Radon-Transform"><a href="#Radon-Transform" class="headerlink" title="Radon Transform"></a>Radon Transform</h3><p>아래 그림은 라돈변환의 예시인데, 그림과 함께 간단하게 설명하자면 “어떤 점과 점 사이를 선적분한 값” 을 표현한 것이다. 이 선적분된 값들을 회전각 축으로 모아둔다면 위의 <code>sinogram</code>과 비슷한 그래프가 그려질 것이다.</p>
+<p><img src="/resource/ct_basic/radon.png" alt="Radon Transform"></p>
+<p>이렇게 CT에서 획득한 <code>sinogram</code>은 라돈 변환, 즉 선적분의 결과를 물리적으로 획득한 것이다. 그래서 어쩌라는 거냐고? 이제 이 <code>sinogram</code>을 다시 image로 복원하기만 하면 된다. 재밌는 점은 이 복원 과정에 또 다시 적분이 사용된다는 점이다. 푸리에 변환과 역변환도 모두 적분을 사용하는 것을 생각하면 꽤 자연스럽다. </br><br>엥? 이거 완전 삼각함수 아니냐!</p>
+<h3 id="Back-projection"><a href="#Back-projection" class="headerlink" title="Back-projection"></a>Back-projection</h3><p>가장 간단한 복원 방법은, <code>sinogram</code>에서 각 회전각마다 그려진 <code>감쇄된 energy</code>를 그대로 back-projection하는 것이다. 이는 마치 키보드에서 입력 키를 인식하는 원리와 같다. 아래는 back-projection의 예시이다.</p>
+<blockquote>
+<p>옛날 키보드는 키 인식을 위한 축을 2개만 사용해서 동시 입력 시 인식에 실패하는 키 조합이 있었다. 이를 응용하면 피카츄 배구를 유리하게 할 수 있다.</p>
+</blockquote>
+<p><img src="/resource/ct_basic/backprojection.png" alt="Back-projection of Phantom"></p>
+<p>그림에서 알 수 있듯이 back-projection이 생각보다 blur하다. 촬영 시 회전각의 변화량을 작게 하고 많은 projection data를 얻을 수 있다면 좋겠지만, X-ray은 방사선이라 많은 양을 조사할 수는 없다.</br><br>사실 긴 시간이 지나 왜 naive한 back-projection이 blur한 image를 복원하는지는 기억이 나지 않는다. 다행스럽게도 기억이 나는 것은 <code>sinogram</code>의 어떤 회전각의 projection을 1차원 푸리에 변환하면, 같은 회전각을 갖는 푸리에 공간의 주파수 특성을 얻을 수 있다는 점이다. (말이 좀 어렵겠지만… Fourier-Slicing thm을 찾아보면 도움이 될지도?)</br><br>일단 주파수 영억으로 넘어가게 되면, 가장 먼저 생각할 수 있는 시도는 filtering이다. Back-projection 이전에 <code>sinogram</code>을 filtering하는 방식을 filtered back-projection이라고 하는데, 이 filtering을 convolution으로 대체하기도 해서 convolution back-projection이라고도 부르는 것 같다. 아래는 평범한 back-projection과 filtered back-projection의 비교이다. </br></p>
+<p><img src="/resource/ct_basic/projection.png" alt="FBP of Phantom"></p>
+<blockquote>
+<p>초창기 CT는 하나의 source와 하나의 detector가 쌍을 이루는 <code>pen-beam</code> 방식을 사용하며, 주로 <strong>hann</strong> 혹은 <strong>hamming</strong> 윈도우로 filtering을 했었다. 하지만, 이 후 하나의 source와 다수의 detector를 사용하는 <code>fan-beam</code> 방식을 사용하면서 극좌표계를 사용하여 좀 더 복잡한 filter를 설계해야 했고, 현대에 들어서는 <code>corn-beam</code> 방식을 사용하면서 구좌표계를 사용한 filter가 필요하게 되었다.</p>
+</blockquote>
+<p><img src="/resource/ct_basic/CT_beam.png" alt="Comparison of Beams"></p>
+<hr>
+<p>본 포스트에서는 CT imaging 원리에 대한 기초적인 내용을 다루었다. 이후 포스트에서는 기업 프로젝트로 진행했던 metal artifact reduction, compressive(sparse) sensing에 대한 내용을 차례로 다루려고 한다.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>zae-park</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/CT/"># CT</a>
+                    
+                        <a href="/tags/Radon-transform/"># Radon transform</a>
+                    
+                        <a href="/tags/Fourier-transform/"># Fourier transform</a>
+                    
+                        <a href="/tags/sinogram/"># sinogram</a>
+                    
+                        <a href="/tags/parallel-beam/"># parallel beam</a>
+                    
+                        <a href="/tags/fan-beam/"># fan beam</a>
+                    
+                        <a href="/tags/corn-beam/"># corn beam</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/01/02/CT-MAR/">CT - Metal Artifact Reduction</a>
+            
+            
+            <a class="next" rel="next" href="/2022/12/28/hello-world/">Hello World</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© zae-park | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

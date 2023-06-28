@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VER5KPGTDK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VER5KPGTDK');
+</script>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="zae-park">
+
+
+    <meta name="subtitle" content="spoon">
+
+
+    <meta name="description" content="The devil in the details.">
+
+
+
+<title>CT - Metal Artifact Reduction | zae-park&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/zaevicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">zae-park&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">zae-park&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">CT - Metal Artifact Reduction</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">zae-park</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">1월 2, 2023&nbsp;&nbsp;22:47:09</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/projects/">projects</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Metal-Artifact-Reduction"><a href="#Metal-Artifact-Reduction" class="headerlink" title="Metal Artifact Reduction"></a>Metal Artifact Reduction</h3><ul>
+<li><a href="#radon-transform">Radon transform</a></li>
+<li><a href="#back-projection">Back-projection</a></li>
+</ul>
+<p>이전 포스트에서는 CT imaging 기초 원리에 대한 내용을 다루었다. 이번 포스트에서는 치과용 CT에서 치아 내 임플란트 등의 금속물이 있는 경우 imaging 과정이 어떻게 변하는지 설명하고 프로젝트를 어떻게 진행했는지에 대해 정리하려 한다.</p>
+<hr>
+<h2 id="Metal-Artifact-Reduction-1"><a href="#Metal-Artifact-Reduction-1" class="headerlink" title="Metal Artifact Reduction"></a>Metal Artifact Reduction</h2><p>CT는 x-ray가 인체 내 조직을 거치며 잃어버린 energy를 image로 나타낸 것이다. 조직마다 각각 다른 attenuation 계수를 가지고 있고, 심지어 이 attnuation은 조직의 밀도와 선형적이지 않다.<br>또, 만약 촬영하려는 부위에 금속물이 있다면 그 근방에 <strong>streak artifact</strong>라는 흰색-검은색 줄무늬가 발생하게 되어 image를 왜곡시킨다. 문제는, 이 금속물의 개수가 2개 이상이 되면, 각 금속물 사이에 streak artifact가 크게 발생하고, 금속물 근방 뿐 아니라 사이에 위치한 image를 전부 왜곡시킨다.<br>예를 들어 큰 수술 이력이 있어 뼈에 금속 보형물이 있다거나, 임플란트나 브릿지와 같은 치과 시술을 받은 경우가 문제가 된다.</p>
+<p><img src="/resource/ct_mar/dictorted_image.png" alt="Distorted Image"></p>
+<p>왜 이런 강한 artifact가 발생하게 될까?</p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h2 id="Task-Metal-Artifact-Reduction"><a href="#Task-Metal-Artifact-Reduction" class="headerlink" title="Task: Metal Artifact Reduction"></a>Task: Metal Artifact Reduction</h2><p>주 과제는 딥러닝으로 구강 내 금속물로 인한 artifact를 제거하는 것이였다.</p>
+<p>문제는 <code>ground truth image</code>, 즉 artifact free image를 구할수 없다는 점이였다.</p>
+<hr>
+<p>그래서 metal이 없는 image로부터 metal artifact를 생성하기로 했다.</p>
+<p>정교한 시뮬레이션을 위해서는 metal artifact 생성과정을 알아야한다.</p>
+<p>X-선은 object를 투과하며 energy가 감쇠된다.</p>
+<p>즉, $E_{source} - E_{detector}$를 imaging하는 것이다.</p>
+<p>모든 object는 고유한 감쇠계수를 갖는데, 문제는 이 계수가 E에 의존한다는 점이다.</p>
+<p>$$<br>C_{attenuation} &#x3D; f(object, E)<br>$$</p>
+<p>실제로는 아래와 같이 streak artifact가 심하게 발생한다.</p>
+<p><img src="/resource/ct_1/Untitled.png" alt="실제 distorted image"></p>
+<p>불행 중 다행은 <strong>fan beam CT</strong>라 근방의 image에서 <strong>간섭하는 artifact</strong>는 무시해도 된다는 점이다.</p>
+<hr>
+<h3 id="Data-generation"><a href="#Data-generation" class="headerlink" title="Data generation"></a>Data generation</h3><ol>
+<li><p>metal이 없는 image 준비하기</p>
+<p> metal artifact를 시뮬레이션하기로 했으니 이제 재료가 필요하다.</p>
+<p> 기업에 간곡히 요청하면 (구걸 x) metal이 없는 image를 받을 수 있다.</p>
+<p> <img src="/resource/ct_1/Untitled_1.png" alt="metal이 없는 image"></p>
+</li>
+<li><p>metal 추가하기</p>
+<p> 원하는 부위(치아)에 원하는 metal을 추가할 수 있어야 한다.</p>
+<ul>
+<li>치아 선택 기능이 있는 gui 제작한다.</li>
+<li>선택된 치아의 edge를 찾고 metal을 생성한다.</li>
+</ul>
+<p> <img src="/resource/ct_1/Untitled_3.png" alt="GUI"><br> <img src="/resource/ct_1/Untitled_2.png" alt="예시"></p>
+</li>
+<li><p>CT imaging 시뮬레이션 하기</p>
+<p> MATLAB의 도움을 아주 많이 받았다! 최고!</p>
+<p> <img src="/resource/ct_1/Untitled_4.png" alt="**Left** : 시뮬레이션으로 생성한 distorted image **Right** : difference image = `raw image + metal - distorted image`"></p>
+<p> <strong>Left</strong> : 시뮬레이션으로 생성한 distorted image<br> <strong>Right</strong> : difference image &#x3D; <code>raw image + metal - distorted image</code></p>
+</li>
+</ol>
+<hr>
+<h3 id="Method-amp-Result"><a href="#Method-amp-Result" class="headerlink" title="Method &amp; Result"></a>Method &amp; Result</h3><p>신경망은 <strong>U-net</strong>을 사용했고, 2가지 학습 방법을 시도했다.</p>
+<ul>
+<li><code>Direct</code> : distorted image → metal free image</li>
+<li><code>Residual</code> : distorted image → difference image<ul>
+<li>metal free image &#x3D; distorted image - difference image</li>
+</ul>
+</li>
+</ul>
+<p><img src="/resource/ct_1/Untitled_5.png" alt="Residual 학습 방법"></p>
+<p>Residual 학습 방법</p>
+<p>여러 hyper parameter, data 구성, dynamic range등을 조절하며 두 학습 방법을 비교한 결과</p>
+<p>일관적으로 <code>Residual</code> 학습 방법이 더 좋은 성능을 보였다 → <strong>criteria &#x3D; NMSE</strong></p>
+<p>결국, 아래의 reconstructed image를 얻을 수 있었다. 짜잔~</p>
+<p><img src="/resource/ct_1/Untitled_6.png" alt="distorted image"></p>
+<p>엄청 잘되는 것 같아 보이지만, metal이 너무 가까이 붙어있거나 많으면 artifact가 남는다.</p>
+<ul>
+<li>치아 사이 입천장 즈음에 dark band는 ROI가 아니라 괜찮지만…</li>
+<li>metal과 metal 사이에 위치한 치아는 형태를 알아보기 어려워지기도 한다.</li>
+</ul>
+<p><img src="/resource/ct_1/Untitled_7.png"></p>
+<p>여러 방법을 시도하고 NMSE 기준 TOP-4를 선정.<br>양치를 너무 안하면 그래도 artifact가 많이 남는다…</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>zae-park</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/CT/"># CT</a>
+                    
+                        <a href="/tags/Radon-transform/"># Radon transform</a>
+                    
+                        <a href="/tags/Fourier-transform/"># Fourier transform</a>
+                    
+                        <a href="/tags/sinogram/"># sinogram</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/01/15/Dental%20CT%20-%202/">Dental CT - 2</a>
+            
+            
+            <a class="next" rel="next" href="/2023/01/02/CT-imaging-basic/">CT imaging 기초</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© zae-park | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
