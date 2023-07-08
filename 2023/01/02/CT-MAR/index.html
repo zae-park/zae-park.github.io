@@ -279,64 +279,49 @@
 </ul>
 <p>이전 포스트에서는 CT imaging 기초 원리에 대한 내용을 다루었다. 이번 포스트에서는 치과용 CT에서 치아 내 임플란트 등의 금속물이 있는 경우 imaging 과정이 어떻게 변하는지 설명하고 프로젝트를 어떻게 진행했는지에 대해 정리하려 한다.</p>
 <hr>
-<h2 id="Metal-Artifact-Reduction-1"><a href="#Metal-Artifact-Reduction-1" class="headerlink" title="Metal Artifact Reduction"></a>Metal Artifact Reduction</h2><p>CT는 x-ray가 인체 내 조직을 거치며 잃어버린 energy를 image로 나타낸 것이다. 조직마다 각각 다른 attenuation 계수를 가지고 있고, 심지어 이 attnuation은 조직의 밀도와 선형적이지 않다.<br>또, 만약 촬영하려는 부위에 금속물이 있다면 그 근방에 <strong>streak artifact</strong>라는 흰색-검은색 줄무늬가 발생하게 되어 image를 왜곡시킨다. 문제는, 이 금속물의 개수가 2개 이상이 되면, 각 금속물 사이에 streak artifact가 크게 발생하고, 금속물 근방 뿐 아니라 사이에 위치한 image를 전부 왜곡시킨다.<br>예를 들어 큰 수술 이력이 있어 뼈에 금속 보형물이 있다거나, 임플란트나 브릿지와 같은 치과 시술을 받은 경우가 문제가 된다.</p>
-<p><img src="/resource/ct_mar/dictorted_image.png" alt="Distorted Image"></p>
-<p>왜 이런 강한 artifact가 발생하게 될까?</p>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h2 id="Task-Metal-Artifact-Reduction"><a href="#Task-Metal-Artifact-Reduction" class="headerlink" title="Task: Metal Artifact Reduction"></a>Task: Metal Artifact Reduction</h2><p>주 과제는 딥러닝으로 구강 내 금속물로 인한 artifact를 제거하는 것이였다.</p>
-<p>문제는 <code>ground truth image</code>, 즉 artifact free image를 구할수 없다는 점이였다.</p>
-<hr>
-<p>그래서 metal이 없는 image로부터 metal artifact를 생성하기로 했다.</p>
-<p>정교한 시뮬레이션을 위해서는 metal artifact 생성과정을 알아야한다.</p>
-<p>X-선은 object를 투과하며 energy가 감쇠된다.</p>
-<p>즉, $E_{source} - E_{detector}$를 imaging하는 것이다.</p>
-<p>모든 object는 고유한 감쇠계수를 갖는데, 문제는 이 계수가 E에 의존한다는 점이다.</p>
-<p>$$<br>C_{attenuation} &#x3D; f(object, E)<br>$$</p>
-<p>실제로는 아래와 같이 streak artifact가 심하게 발생한다.</p>
-<p><img src="/resource/ct_1/Untitled.png" alt="실제 distorted image"></p>
-<p>불행 중 다행은 <strong>fan beam CT</strong>라 근방의 image에서 <strong>간섭하는 artifact</strong>는 무시해도 된다는 점이다.</p>
-<hr>
-<h3 id="Data-generation"><a href="#Data-generation" class="headerlink" title="Data generation"></a>Data generation</h3><ol>
-<li><p>metal이 없는 image 준비하기</p>
-<p> metal artifact를 시뮬레이션하기로 했으니 이제 재료가 필요하다.</p>
-<p> 기업에 간곡히 요청하면 (구걸 x) metal이 없는 image를 받을 수 있다.</p>
-<p> <img src="/resource/ct_1/Untitled_1.png" alt="metal이 없는 image"></p>
-</li>
-<li><p>metal 추가하기</p>
-<p> 원하는 부위(치아)에 원하는 metal을 추가할 수 있어야 한다.</p>
+<h2 id="Metal-Artifact-Reduction-1"><a href="#Metal-Artifact-Reduction-1" class="headerlink" title="Metal Artifact Reduction"></a>Metal Artifact Reduction</h2><p>CT는 x-ray가 인체 내 조직을 거치며 잃어버린 energy를 image로 나타낸 것이다. 조직마다 각각 다른 attenuation 계수를 가지고 있고, 심지어 이 attnuation은 조직의 밀도와 선형적이지 않다.<br>또, 만약 촬영하려는 부위에 금속물이 있다면 그 근방에 <strong>streak artifact</strong>라는 흰색-검은색 줄무늬가 발생하게 되어 image를 왜곡시킨다. 게다가, 이 금속물의 개수가 2개 이상이 되면, 각 금속물 사이에 streak artifact가 심해지면서 금속물 근방 뿐 아니라 사이에 위치한 image를 전부 왜곡시킨다.<br>예를 들어, 큰 수술 이력이 있어 뼈에 금속 보형물이 있다거나, 임플란트나 브릿지와 같은 치과 시술을 받은 경우가 문제가 된다.</p>
+<p><img src="/resource/ct_mar/distorted_image.png" alt="Distorted Image"></p>
+<p><strong>그렇다면 streak artifact는 어떻게 발생하게 되는 걸까?</strong></p>
+<p>지난 포스트 <a href="resource/ct-imaging-basic">CT imaging 기초</a>에서 CT는 <code>조직에 의해 감쇠된 energy</code>를 image로 그린다고 했다. 이는 streak artifact의 흰색-검은색 줄무늬가 매우 높은 값, 또는 매우 낮은 값을 갖는다는 것을 뜻한다.<br>X-ray는 진행 경로 상에서 object를 만나면 투과, 굴절, 흡수 등의 상호작용을 하게된다. 만약, X-ray가 진행 경로 중 금속을 만나 일부 입자가 굴절되면, 그 경로에 있던 detector가 수신하는 energy는 그만큼 작아지게 되며 굴절된 energy는 근방의 다른 detector가 수신하게 되어 더 큰 energy를 수신하게 된다.<br>이를 detector 입장에서 해석하면, 전자의 경우는 경로상에 HU이 큰 어떤 object에 의해 energy의 큰 감쇠가 있었으니 흰색 줄무늬를, 후자의 경우는 경로상에 energy 감쇠가 적었으니 검정 줄무늬를 그리게 된다.</p>
+<blockquote>
+<p>HU이란 물질마다 갖는 고유한 선형 감쇠계수 $\mu$를 물과 상대적인 수치로 나타낸 값이다.</p>
+</blockquote>
+<h3 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h3><p><img src="/resource/ct_mar/dataset.png" alt="Distorted Image"></p>
+<p>프로젝트의 목표는 <code>metal artifact 줄이기</code>이다. 이를 supervised learning으로 풀기 위해서는 위와 같은 distorted image와 쌍이 되는 artifact-free image가 필요하다.<br>하지만, 치아에 있는 금속물들은 탈부착이 불가능할 뿐 아니라, 만약 탈부착하더라도 같은 위치의 단층 촬영 image를 얻기는 불가능하다. 그래서 아래와 같은 순서로 이 data를 직접 만들기로 했다!</p>
 <ul>
-<li>치아 선택 기능이 있는 gui 제작한다.</li>
-<li>선택된 치아의 edge를 찾고 metal을 생성한다.</li>
+<li>metal이 없는 건강한 치아의 단층 촬영 CT image, raw image를 얻는다.</li>
+<li>raw image의 치아 영역에 크라운, 브릿지 등의 금속 조형물을 추가한다.<ul>
+<li>크라운은 1개의 치아를 선택하고, 이들의 edge를 선택한다.</li>
+<li>브릿지는 n개의 연속된 치아를 선택하고, 이들의 edge를 선택한다.</li>
+<li>임플란트는 1개의 치아를 선택하고 fill 한다.</li>
+<li>필링(땜빵)은 치아 영역 내부에 사각형, 원형 등의 작은 조각을 추가한다.</li>
 </ul>
-<p> <img src="/resource/ct_1/Untitled_3.png" alt="GUI"><br> <img src="/resource/ct_1/Untitled_2.png" alt="예시"></p>
 </li>
-<li><p>CT imaging 시뮬레이션 하기</p>
-<p> MATLAB의 도움을 아주 많이 받았다! 최고!</p>
-<p> <img src="/resource/ct_1/Untitled_4.png" alt="**Left** : 시뮬레이션으로 생성한 distorted image **Right** : difference image = `raw image + metal - distorted image`"></p>
-<p> <strong>Left</strong> : 시뮬레이션으로 생성한 distorted image<br> <strong>Right</strong> : difference image &#x3D; <code>raw image + metal - distorted image</code></p>
+<li>추가한 조형물들의 HU를 결정하고 Radon transform을 통해 sinogram을 생성한다.<ul>
+<li>레진, 금 등 조형물에 사용된 물질에 따라 HU가 다른 점을 주의한다.</li>
+</ul>
 </li>
-</ol>
+<li>FBP을 통해 sinogram을 distorted image로 재구성한다.<ul>
+<li>기존 image의 dynamic range가 유지되지 않을 수 있으니 주의한다.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/resource/ct_mar/data_gen_ui.png" alt="GUI"></p>
+<p>위의 과정은 그리 복잡하지 않지만, 모든 image를 작업하기에는 무리가 있다. 특히, 원하는 치아에 원하는 조형물을 추가하려면 GUI가 필수적이다. 다행히 MATLAB에서 간단하게 GUI를 만들 수 있는 기능을 제공해서 이를 활용했다. 이름은 guide 였던 것 같은데… 이게 없었으면 MFC로 GUI를 만들 생각을 하니 좀 끔찍하다.</p>
+<h3 id="Train-Artifact"><a href="#Train-Artifact" class="headerlink" title="Train Artifact"></a>Train Artifact</h3><p>이제 metal image와 distorted image 쌍을 확보한 상태이다. 이제 이 dataset을 사용하여 신경망을 학습해야 하는데, 두가지 방법이 있었다.</p>
+<ul>
+<li><code>input</code> Distorted image &amp; <code>output</code> Artifact-free image</li>
+<li><code>input</code> Distorted image &amp; <code>output</code> Difference image</li>
+</ul>
+<blockquote>
+<p>일부 논문에서는 후자의 방법을 residual learning이라고도 한다.<br>아래의 image에서 왼쪽은 distorted image를, 오른쪽은 difference image를 보여준다. difference image는 metal image에서 distorted image를 뺀 것이다.</p>
+<p><img src="/resource/ct_mar/residual.png" alt="result"></p>
+</blockquote>
+<p>두 학습방법 중 실험적으로 후자를 선택하였다.<br>뒤늦게나마 해석하자면, 신경망에게 metal의 개수나 크기, HU에 따라 천차만별인 metal artifact를 추론하고 이를 제거하는 역할보다는, 비교적 변화 폭이 작은 raw image와 metal 정도를 추론하는 것이 더 쉽고 안정적이지 않았을까 생각해본다.</p>
+<p><img src="/resource/ct_mar/test.png" alt="result"></p>
+<p>협업하는 기업에게 신경망의 weight를 전달하기 위해 위와 같이 여러 ablation study를 진행했다. CT image에 관련된 voxel size, resolution, dynamic range 등을 조절해보기도 하고, 신경망의 hyper parameter 및 seed를 조절하며 weight 초기화에 따른 성능 변화를 검토하기도 했다. 결국 4개의 weight가 후보군에 올랐고, 실제 clinical data에 이를 적용해보며 최종 weight를 선정하게 되었다.<br>위 그림에서 오른쪽이 각각의 weight를 통해 재구성한 영상들 중 일부 ROI를 자세하게 나타낸 것이다. 어렴풋한 기억으로는, 치아 가운데 부비동 부분의 artifact는 중요하지 않아 W3이 선택되었던 것 같다.</p>
 <hr>
-<h3 id="Method-amp-Result"><a href="#Method-amp-Result" class="headerlink" title="Method &amp; Result"></a>Method &amp; Result</h3><p>신경망은 <strong>U-net</strong>을 사용했고, 2가지 학습 방법을 시도했다.</p>
-<ul>
-<li><code>Direct</code> : distorted image → metal free image</li>
-<li><code>Residual</code> : distorted image → difference image<ul>
-<li>metal free image &#x3D; distorted image - difference image</li>
-</ul>
-</li>
-</ul>
-<p><img src="/resource/ct_1/Untitled_5.png" alt="Residual 학습 방법"></p>
-<p>Residual 학습 방법</p>
-<p>여러 hyper parameter, data 구성, dynamic range등을 조절하며 두 학습 방법을 비교한 결과</p>
-<p>일관적으로 <code>Residual</code> 학습 방법이 더 좋은 성능을 보였다 → <strong>criteria &#x3D; NMSE</strong></p>
-<p>결국, 아래의 reconstructed image를 얻을 수 있었다. 짜잔~</p>
-<p><img src="/resource/ct_1/Untitled_6.png" alt="distorted image"></p>
-<p>엄청 잘되는 것 같아 보이지만, metal이 너무 가까이 붙어있거나 많으면 artifact가 남는다.</p>
-<ul>
-<li>치아 사이 입천장 즈음에 dark band는 ROI가 아니라 괜찮지만…</li>
-<li>metal과 metal 사이에 위치한 치아는 형태를 알아보기 어려워지기도 한다.</li>
-</ul>
-<p><img src="/resource/ct_1/Untitled_7.png"></p>
-<p>여러 방법을 시도하고 NMSE 기준 TOP-4를 선정.<br>양치를 너무 안하면 그래도 artifact가 많이 남는다…</p>
+<p>본 포스트에서 다룬 내용은 치아에 금속 조형물이 있는 경우 발생하는 artifact와 이를 줄이기 위한 deep learning project이다. 사용한 model, 정확한 parameter는 기억도 나지 않고, 공개하기도 부담되니 생략하였다. 이후 포스트에서는 적은 조사량으로 CT image를 재구성하는 compressive(sparse) sensing에 대한 내용을 다루려고 한다.</p>
 
         </div>
 
@@ -367,11 +352,13 @@
                     
                         <a href="/tags/CT/"># CT</a>
                     
-                        <a href="/tags/Radon-transform/"># Radon transform</a>
+                        <a href="/tags/MAR/"># MAR</a>
                     
-                        <a href="/tags/Fourier-transform/"># Fourier transform</a>
+                        <a href="/tags/U-net/"># U-net</a>
                     
-                        <a href="/tags/sinogram/"># sinogram</a>
+                        <a href="/tags/deep-learning/"># deep learning</a>
+                    
+                        <a href="/tags/image-reconstruction/"># image reconstruction</a>
                     
                         
                 </span>
