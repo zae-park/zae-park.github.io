@@ -1,13 +1,13 @@
 ---
-title: CT imaging 기초
+title: CT - imaging 기초
 date: 2023-01-02 22:47:09
 tags: [CT, Radon transform, Fourier transform, sinogram, parallel beam, fan beam, corn beam]
-categories: projects
+categories: CT
 mathjax: true 
 ---
 
-### Computed Tomography
-- [Computed Tomography](#computed-tomography-1)
+### Contents
+- [Computed Tomography](#computed-tomography)
   - [Radon Transform](#radon-transform)
   - [Back-projection](#back-projection)
 
