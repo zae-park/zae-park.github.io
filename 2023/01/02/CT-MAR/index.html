@@ -264,7 +264,7 @@
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/projects/">projects</a>
+                                <a href="/categories/CT/">CT</a>
                             
                         </span>
                     
@@ -273,13 +273,16 @@
         </header>
 
         <div class="post-content">
-            <h3 id="Metal-Artifact-Reduction"><a href="#Metal-Artifact-Reduction" class="headerlink" title="Metal Artifact Reduction"></a>Metal Artifact Reduction</h3><ul>
-<li><a href="#radon-transform">Radon transform</a></li>
-<li><a href="#back-projection">Back-projection</a></li>
+            <h3 id="Contents"><a href="#Contents" class="headerlink" title="Contents"></a>Contents</h3><ul>
+<li><a href="#metal-artifact-reduction">Metal Artifact Reduction</a><ul>
+<li><a href="#data">Data</a></li>
+<li><a href="#train-artifact">Train Artifact</a></li>
+</ul>
+</li>
 </ul>
 <p>이전 포스트에서는 CT imaging 기초 원리에 대한 내용을 다루었다. 이번 포스트에서는 치과용 CT에서 치아 내 임플란트 등의 금속물이 있는 경우 imaging 과정이 어떻게 변하는지 설명하고 프로젝트를 어떻게 진행했는지에 대해 정리하려 한다.</p>
 <hr>
-<h2 id="Metal-Artifact-Reduction-1"><a href="#Metal-Artifact-Reduction-1" class="headerlink" title="Metal Artifact Reduction"></a>Metal Artifact Reduction</h2><p>CT는 x-ray가 인체 내 조직을 거치며 잃어버린 energy를 image로 나타낸 것이다. 조직마다 각각 다른 attenuation 계수를 가지고 있고, 심지어 이 attnuation은 조직의 밀도와 선형적이지 않다.<br>또, 만약 촬영하려는 부위에 금속물이 있다면 그 근방에 <strong>streak artifact</strong>라는 흰색-검은색 줄무늬가 발생하게 되어 image를 왜곡시킨다. 게다가, 이 금속물의 개수가 2개 이상이 되면, 각 금속물 사이에 streak artifact가 심해지면서 금속물 근방 뿐 아니라 사이에 위치한 image를 전부 왜곡시킨다.<br>예를 들어, 큰 수술 이력이 있어 뼈에 금속 보형물이 있다거나, 임플란트나 브릿지와 같은 치과 시술을 받은 경우가 문제가 된다.</p>
+<h2 id="Metal-Artifact-Reduction"><a href="#Metal-Artifact-Reduction" class="headerlink" title="Metal Artifact Reduction"></a>Metal Artifact Reduction</h2><p>CT는 x-ray가 인체 내 조직을 투과하며 잃어버린 energy를 image로 나타낸 것이다. 조직마다 각각 다른 attenuation 계수를 가지고 있고, 심지어 이 attnuation은 조직의 밀도와 선형적이지 않다.<br>또, 만약 촬영하려는 부위에 금속물이 있다면 그 근방에 <strong>streak artifact</strong>라는 흰색-검은색 줄무늬가 발생하게 되어 image를 왜곡시킨다. 게다가, 이 금속물의 개수가 2개 이상이 되면, 각 금속물 사이에 streak artifact가 심해지면서 금속물 근방 뿐 아니라 사이에 위치한 image를 전부 왜곡시킨다.<br>예를 들어, 큰 수술 이력이 있어 뼈에 금속 보형물이 있다거나, 임플란트나 브릿지와 같은 치과 시술을 받은 경우가 문제가 된다.</p>
 <p><img src="/resource/ct_mar/distorted_image.png" alt="Distorted Image"></p>
 <p><strong>그렇다면 streak artifact는 어떻게 발생하게 되는 걸까?</strong></p>
 <p>지난 포스트 <a href="resource/ct-imaging-basic">CT imaging 기초</a>에서 CT는 <code>조직에 의해 감쇠된 energy</code>를 image로 그린다고 했다. 이는 streak artifact의 흰색-검은색 줄무늬가 매우 높은 값, 또는 매우 낮은 값을 갖는다는 것을 뜻한다.<br>X-ray는 진행 경로 상에서 object를 만나면 투과, 굴절, 흡수 등의 상호작용을 하게된다. 만약, X-ray가 진행 경로 중 금속을 만나 일부 입자가 굴절되면, 그 경로에 있던 detector가 수신하는 energy는 그만큼 작아지게 되며 굴절된 energy는 근방의 다른 detector가 수신하게 되어 더 큰 energy를 수신하게 된다.<br>이를 detector 입장에서 해석하면, 전자의 경우는 경로상에 HU이 큰 어떤 object에 의해 energy의 큰 감쇠가 있었으니 흰색 줄무늬를, 후자의 경우는 경로상에 energy 감쇠가 적었으니 검정 줄무늬를 그리게 된다.</p>
@@ -288,6 +291,7 @@
 </blockquote>
 <h3 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h3><p><img src="/resource/ct_mar/dataset.png" alt="Distorted Image"></p>
 <p>프로젝트의 목표는 <code>metal artifact 줄이기</code>이다. 이를 supervised learning으로 풀기 위해서는 위와 같은 distorted image와 쌍이 되는 artifact-free image가 필요하다.<br>하지만, 치아에 있는 금속물들은 탈부착이 불가능할 뿐 아니라, 만약 탈부착하더라도 같은 위치의 단층 촬영 image를 얻기는 불가능하다. 그래서 아래와 같은 순서로 이 data를 직접 만들기로 했다!</p>
+<blockquote>
 <ul>
 <li>metal이 없는 건강한 치아의 단층 촬영 CT image, raw image를 얻는다.</li>
 <li>raw image의 치아 영역에 크라운, 브릿지 등의 금속 조형물을 추가한다.<ul>
@@ -306,6 +310,7 @@
 </ul>
 </li>
 </ul>
+</blockquote>
 <p><img src="/resource/ct_mar/data_gen_ui.png" alt="GUI"></p>
 <p>위의 과정은 그리 복잡하지 않지만, 모든 image를 작업하기에는 무리가 있다. 특히, 원하는 치아에 원하는 조형물을 추가하려면 GUI가 필수적이다. 다행히 MATLAB에서 간단하게 GUI를 만들 수 있는 기능을 제공해서 이를 활용했다. 이름은 guide 였던 것 같은데… 이게 없었으면 MFC로 GUI를 만들 생각을 하니 좀 끔찍하다.</p>
 <h3 id="Train-Artifact"><a href="#Train-Artifact" class="headerlink" title="Train Artifact"></a>Train Artifact</h3><p>이제 metal image와 distorted image 쌍을 확보한 상태이다. 이제 이 dataset을 사용하여 신경망을 학습해야 하는데, 두가지 방법이 있었다.</p>
@@ -371,10 +376,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2023/01/15/Dental%20CT%20-%202/">Dental CT - 2</a>
+                <a class="prev" rel="prev" href="/2023/01/15/CT-CS/">CT - Compressive Senging</a>
             
             
-            <a class="next" rel="next" href="/2023/01/02/CT-imaging-basic/">CT imaging 기초</a>
+            <a class="next" rel="next" href="/2023/01/02/CT-imaging-basic/">CT - imaging 기초</a>
             
         </section>
 

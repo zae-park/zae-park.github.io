@@ -26,7 +26,7 @@
 
 
 
-<title>CT imaging 기초 | zae-park&#39;s blog</title>
+<title>CT - imaging 기초 | zae-park&#39;s blog</title>
 
 
 
@@ -248,7 +248,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">CT imaging 기초</h1>
+            <h1 class="post-title">CT - imaging 기초</h1>
             
                 <div class="post-meta">
                     
@@ -264,7 +264,7 @@
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/projects/">projects</a>
+                                <a href="/categories/CT/">CT</a>
                             
                         </span>
                     
@@ -273,8 +273,8 @@
         </header>
 
         <div class="post-content">
-            <h3 id="Computed-Tomography"><a href="#Computed-Tomography" class="headerlink" title="Computed Tomography"></a>Computed Tomography</h3><ul>
-<li><a href="#computed-tomography-1">Computed Tomography</a><ul>
+            <h3 id="Contents"><a href="#Contents" class="headerlink" title="Contents"></a>Contents</h3><ul>
+<li><a href="#computed-tomography">Computed Tomography</a><ul>
 <li><a href="#radon-transform">Radon Transform</a></li>
 <li><a href="#back-projection">Back-projection</a></li>
 </ul>
@@ -283,7 +283,7 @@
 <p>인생의 첫 연구는 학부 연구생 시절 Dental CT 제조기업(G**)과 함께 진행한 Metal Artifact Reduction 프로젝트다. 너무 어려웠지만 선배들과 같이 연구하고 실제 제품에도 기여한 좋은 경험이니 최대한 잘 정리해보려 한다.</p>
 <p>우선, 이 글에서는 CT image의 촬영 원리를 최대한 기억해서 써본다.</p>
 <hr>
-<h2 id="Computed-Tomography-1"><a href="#Computed-Tomography-1" class="headerlink" title="Computed Tomography"></a>Computed Tomography</h2><p>CT는 X-ray 영상을 다각도에서 촬영하는 기법이다. </br><br>그러면 대체 투과 영상인 X-ray를 어떻게 해야 CT 같은 단층 촬영 영상이 나올까?</p>
+<h2 id="Computed-Tomography"><a href="#Computed-Tomography" class="headerlink" title="Computed Tomography"></a>Computed Tomography</h2><p>CT는 X-ray 영상을 다각도에서 촬영하는 기법이다. </br><br>그러면 대체 투과 영상인 X-ray를 어떻게 해야 CT 같은 단층 촬영 영상이 나올까?</p>
 <p>먼저, X-ray 영상을 떠올려 보면, (대개는 흉부 X-ray 영상을 상상한다) 지방, 근육등의 조직은 흐리거나 투명하게, 뼈와 같은 밀도가 높은 조직은 하얗게 나타난다. 이는 X-ray 영상이 조직이 <code>감쇠된 energy</code>를 나타내기 때문이며, 감쇠된 정도는 <code>조사한 energy</code> - <code>검출된 energy</code>로 계산한다.<br>$$<br>E_{attenuated} &#x3D; E_{source} - E_{detector}<br>$$</p>
 <p>CT 촬영기법은 이 <strong>감쇠된 energy</strong>를 모든 각도에서 촬영하고 이를 다시 회전각-감쇠도 축에 그려 <code>sinogram</code> 이라는 그래프를 만든다. 다시말해 이 <code>sinogram</code>은 “각도에 따라 느껴지는 감쇠정도”로 해석할 수 있는데 이것이 라돈 변환과 매우 비슷하다. </br></p>
 <blockquote>
